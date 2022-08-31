@@ -2,19 +2,11 @@ package escuelaing.ieti.lab2p1.dto;
 
 public class UserDTO {
 
-    private Integer id;
     private String name;
     private String email;
     private String lastName;
     private String createdAt;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
