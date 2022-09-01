@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Service
+//@Service
 public class UserImpl implements UserService {
 
     private final ConcurrentHashMap<Integer, User> users = new ConcurrentHashMap<Integer, User>();
