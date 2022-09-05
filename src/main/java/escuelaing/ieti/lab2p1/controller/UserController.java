@@ -22,6 +22,7 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAll() {
         try {
+            System.out.println();
             return new ResponseEntity<>(userService.getAll(), HttpStatus.ACCEPTED);
         }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

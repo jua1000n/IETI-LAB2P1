@@ -1,46 +1,48 @@
 package escuelaing.ieti.lab2p1.service.impl;
 
 import escuelaing.ieti.lab2p1.entities.User;
+import escuelaing.ieti.lab2p1.repository.UserRepository;
 import escuelaing.ieti.lab2p1.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-//@Service
+@Service
 public class UserImpl implements UserService {
 
-    private final ConcurrentHashMap<Integer, User> users = new ConcurrentHashMap<Integer, User>();
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public User create(User user) {
-        users.put(user.getId(), user);
-        return users.get(user.getId());
+        userRepository.save(user);
+        return null;
     }
 
     @Override
     public User findById(int id) {
-        return users.get(id);
+        return userRepository.findById(id).get();
     }
 
     @Override
     public List<User> getAll() {
-        List<User> request = new ArrayList<>();
-        for (Integer key: users.keySet()) {
-            request.add(users.get(key));
+        List<User> users = new ArrayList<>();
+        for (User s:userRepository.findAll()) {
+            users.add(s);
         }
-        return request;
+        return users;
     }
 
     @Override
     public void deleteById(int id) {
-        users.remove(id);
+        userRepository.deleteById(id);
     }
 
     @Override
     public User update(User user, int id) {
-        users.remove(id);
-        return users.put(id, user);
+        return null;
     }
 }

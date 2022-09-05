@@ -6,8 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 @Document
-public interface UserRepository extends MongoRepository<User, String> {
-
-    @Query
-    User create(User user);
+public interface UserRepository extends MongoRepository<User, Integer> {
 }
