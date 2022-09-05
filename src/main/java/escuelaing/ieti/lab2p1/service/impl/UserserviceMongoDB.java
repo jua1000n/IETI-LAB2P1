@@ -16,6 +16,7 @@ public class UserserviceMongoDB implements UserService {
 
     @Override
     public User create(User user) {
+        userRepository.save(user);
         return null;
     }
 
@@ -30,9 +31,7 @@ public class UserserviceMongoDB implements UserService {
     }
 
     @Override
-    public void deleteById(int id) {
-
-    }
+    public void deleteById(int id) {}
 
     @Override
     public User update(User user, int id) {
