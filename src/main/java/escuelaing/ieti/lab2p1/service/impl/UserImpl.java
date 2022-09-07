@@ -39,7 +39,10 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public User update(User user, int id) {
+    public User update(User user, int id) throws Exception {
+        if(findById(id) == null) {
+            throw new Exception("El usuario no existe");
+        }
         deleteById(id);
         user.setId(id);
         return create(user);

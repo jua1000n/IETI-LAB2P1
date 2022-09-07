@@ -10,6 +10,6 @@ public interface UserService {
     User findById(int id);
     List<User> getAll();
     void deleteById(int id);
-    User update(User user, int id);
+    User update(User user, int id) throws Exception;
 
 }
