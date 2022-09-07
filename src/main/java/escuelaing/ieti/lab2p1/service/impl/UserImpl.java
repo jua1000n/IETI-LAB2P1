@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class UserImpl implements UserService {
@@ -19,7 +18,7 @@ public class UserImpl implements UserService {
     @Override
     public User create(User user) {
         userRepository.save(user);
-        return null;
+        return findById(user.getId());
     }
 
     @Override
@@ -30,9 +29,7 @@ public class UserImpl implements UserService {
     @Override
     public List<User> getAll() {
         List<User> users = new ArrayList<>();
-        for (User s:userRepository.findAll()) {
-            users.add(s);
-        }
+        users.addAll(userRepository.findAll());
         return users;
     }
 
@@ -43,6 +40,8 @@ public class UserImpl implements UserService {
 
     @Override
     public User update(User user, int id) {
-        return null;
+        deleteById(id);
+        user.setId(id);
+        return create(user);
     }
 }
