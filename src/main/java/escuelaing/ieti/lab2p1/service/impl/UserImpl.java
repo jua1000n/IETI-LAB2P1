@@ -22,7 +22,7 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public User findById(int id) {
+    public User findById(String id) {
         return userRepository.findById(id).get();
     }
 
@@ -34,17 +34,22 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(String id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public User update(User user, int id) throws Exception {
+    public User update(User user, String id) throws Exception {
         if(findById(id) == null) {
             throw new Exception("El usuario no existe");
         }
         deleteById(id);
         user.setId(id);
         return create(user);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

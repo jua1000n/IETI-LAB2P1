@@ -3,10 +3,18 @@ package escuelaing.ieti.lab2p1.dto;
 public class UserDTO {
 
     private String name;
-    private String email;
+    public String email;
     private String lastName;
     private String createdAt;
+    private String password;
 
+    public UserDTO(String name, String email, String lastName, String createdAt, String password) {
+        this.name = name;
+        this.email = email;
+        this.lastName = lastName;
+        this.createdAt = createdAt;
+        this.password = password;
+    }
 
     public String getName() {
         return name;
@@ -38,5 +46,13 @@ public class UserDTO {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

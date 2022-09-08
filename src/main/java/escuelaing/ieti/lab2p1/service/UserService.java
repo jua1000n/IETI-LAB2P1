@@ -7,9 +7,10 @@ import java.util.List;
 public interface UserService {
 
     User create(User user);
-    User findById(int id);
+    User findById(String id);
     List<User> getAll();
-    void deleteById(int id);
-    User update(User user, int id) throws Exception;
+    void deleteById(String id);
+    User update(User user, String id) throws Exception;
+    User findByEmail(String email);
 
 }

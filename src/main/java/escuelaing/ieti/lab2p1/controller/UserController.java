@@ -3,11 +3,15 @@ package escuelaing.ieti.lab2p1.controller;
 import escuelaing.ieti.lab2p1.dto.UserDTO;
 import escuelaing.ieti.lab2p1.entities.User;
 import escuelaing.ieti.lab2p1.service.UserService;
+import escuelaing.ieti.lab2p1.utils.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -15,8 +19,13 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequestMapping("/v1/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+
+    public UserController(@Autowired UserService userService) {
+        this.userService = userService;
+    }
+
     private final AtomicLong counter = new AtomicLong(0);
 
     @GetMapping("/users")
@@ -30,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping( "/{id}" )
-    public ResponseEntity<User> findById( @PathVariable int id ) {
+    public ResponseEntity<User> findById( @PathVariable String id ) {
         try {
             return new ResponseEntity<>(userService.findById(id), HttpStatus.ACCEPTED);
         }catch (Exception e) {
@@ -41,12 +50,8 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> create(@RequestBody UserDTO userDTO) {
         try{
-            User user = new User();
-            user.setId((int) counter.incrementAndGet());
-            user.setEmail(userDTO.getEmail());
-            user.setName(userDTO.getName());
-            user.setLastName(userDTO.getLastName());
-            user.setCreatedAt(userDTO.getCreatedAt());
+            User user = new User(userDTO);
+            user.setId(String.valueOf(counter.incrementAndGet()));
             return new ResponseEntity<>(userService.create(user) ,HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -54,14 +59,16 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<User> update(@RequestBody UserDTO userDTO, @PathVariable int id) {
+    public ResponseEntity<User> update(@RequestBody UserDTO userDTO, @PathVariable String id) {
         try{
             User user = userService.findById(id);
             user.setEmail(userDTO.getEmail());
             user.setName(userDTO.getName());
             user.setLastName(userDTO.getLastName());
             user.setCreatedAt(userDTO.getCreatedAt());
-            userService.update(user, id);
+            if (userDTO.getPassword() != null) {
+                user.setPasswordHash(BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt()));
+            }
             return new ResponseEntity<>(userService.update(user, id), HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -69,7 +76,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable int id) {
+    public ResponseEntity<Boolean> delete(@PathVariable String id) {
         try{
             userService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);

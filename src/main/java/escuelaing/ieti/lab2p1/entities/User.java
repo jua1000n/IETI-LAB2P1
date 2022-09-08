@@ -1,20 +1,28 @@
 package escuelaing.ieti.lab2p1.entities;
 
+import escuelaing.ieti.lab2p1.dto.UserDTO;
+import escuelaing.ieti.lab2p1.utils.RoleEnum;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import java.util.List;
 
 @Document("user")
 public class User {
     @Id
-    private Integer id;
+    private String id;
     private String name;
+    @Indexed(unique = true)
     private String email;
     private String lastName;
     private String createdAt;
+    private String passwordHash;
+    private List<RoleEnum> roles;
 
     public User() {}
-    public User(Integer id, String name, String email, String lastName, String createdAt) {
+    public User(String id, String name, String email, String lastName, String createdAt) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -22,11 +30,19 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public Integer getId() {
+    public User(UserDTO userDTO) {
+        this.name = userDTO.getName();
+        this.email = userDTO.getEmail();
+        this.lastName = userDTO.getLastName();
+        this.createdAt = userDTO.getCreatedAt();
+        this.passwordHash = BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt());
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -60,5 +76,21 @@ public class User {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public List<RoleEnum> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleEnum> roles) {
+        this.roles = roles;
     }
 }
