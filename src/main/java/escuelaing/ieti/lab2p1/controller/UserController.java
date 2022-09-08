@@ -5,12 +5,12 @@ import escuelaing.ieti.lab2p1.entities.User;
 import escuelaing.ieti.lab2p1.service.UserService;
 import escuelaing.ieti.lab2p1.utils.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -52,6 +52,7 @@ public class UserController {
         try{
             User user = new User(userDTO);
             user.setId(String.valueOf(counter.incrementAndGet()));
+            user.setRoles(Collections.singletonList(RoleEnum.USER));
             return new ResponseEntity<>(userService.create(user) ,HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -76,6 +77,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @RolesAllowed("ADMIN")
     public ResponseEntity<Boolean> delete(@PathVariable String id) {
         try{
             userService.deleteById(id);
