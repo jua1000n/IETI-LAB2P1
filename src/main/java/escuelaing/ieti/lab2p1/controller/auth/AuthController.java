@@ -21,7 +21,7 @@ import java.util.Date;
 import static escuelaing.ieti.lab2p1.utils.Constants.CLAIMS_ROLES_KEY;
 import static escuelaing.ieti.lab2p1.utils.Constants.TOKEN_DURATION_MINUTES;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping( "v1/auth" )
 public class AuthController
