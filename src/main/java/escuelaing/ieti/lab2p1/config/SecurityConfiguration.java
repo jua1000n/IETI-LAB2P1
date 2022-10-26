@@ -38,18 +38,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers( HttpMethod.POST, "/v1/auth" )
                 .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS );
-        
-        http.addFilterBefore(jwtRequestFilter, BasicAuthenticationFilter.class )
-                .cors()
-                .and()
-                .csrf()
-                .disable()
-                .authorizeRequests()
                 .antMatchers( HttpMethod.POST,"/v1/user" )
                 .permitAll()
                 .anyRequest()
