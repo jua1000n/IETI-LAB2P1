@@ -51,7 +51,6 @@ public class UserController {
     public ResponseEntity<User> create(@RequestBody UserDTO userDTO) {
         try{
             User user = new User(userDTO);
-            user.setId(String.valueOf(counter.incrementAndGet()));
             user.setRoles(Collections.singletonList(RoleEnum.USER));
             return new ResponseEntity<>(userService.create(user) ,HttpStatus.CREATED);
         }catch (Exception e){
