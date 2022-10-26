@@ -37,6 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers( HttpMethod.POST, "/v1/auth" )
+                .antMatchers( HttpMethod.POST,"/v1/user" )
                 .permitAll()
                 .anyRequest()
                 .authenticated()
